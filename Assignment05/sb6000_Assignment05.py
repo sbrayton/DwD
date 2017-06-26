@@ -44,60 +44,83 @@ getNews ('ars-technica')
 def extractEntities(url):
     endpoint = "https://gateway.watsonplatform.net/natural-language-understanding/api/v1/analyze"
 
-    username = "6bf093e3-0311-4f4c-aac1-d089110afabb"
-    password = "fYisqCfAx8B5"
+    natural_language_understanding = NaturalLanguageUnderstandingV1(
+      username="6bf093e3-0311-4f4c-aac1-d089110afabb",
+      password="fYisqCfAx8B5",
+      version="2017-02-27")
+
+
+    response = natural_language_understanding.analyze(
+      text=url,
+      features=[
+        Features.Entities(
+          emotion=True,
+          sentiment=True,
+          limit=2
+        ),
+        Features.Keywords(
+          emotion=True,
+          sentiment=True,
+          limit=2
+        )
+      ]
+    )
+    return json.dumps(response, indent=2)
+
+
+url = "IBM is an American multinational technology company headquartered \
+    in Armonk, New York, United States, with operations in over 170 \
+    countries."
+# print(extractEntities(url))
+
+
+
+
+def getSentiment(url):
+    endpoint = "https://gateway.watsonplatform.net/natural-language-understanding/api/v1/analyze"
+
+    # You can register and get your own credentials
+    # The ones below have a quota of 1000 calls per day 
+    # and can run out quickly if multiple people use these
+    username="6bf093e3-0311-4f4c-aac1-d089110afabb"
+    password="fYisqCfAx8B5"
     version="2017-02-27"
 
-response = natural_language_understanding.analyze(
-  text="IBM is an American multinational technology company headquartered \
-    in Armonk, New York, United States, with operations in over 170 \
-    countries.",
-  features=[
-    Features.Entities(
-      emotion=True,
-      sentiment=True,
-      limit=2
-    ),
-    Features.Keywords(
-      emotion=True,
-      sentiment=True,
-      limit=2
-    )
-  ]
-)
+    endpoint_watson = "https://gateway.watsonplatform.net/natural-language-understanding/api/v1/analyze"
+    params = {
+        'version': '2017-02-27',
+    }
+    headers = { 
+        'Content-Type': 'application/json',
+    }
+    watson_options = {
+      "url": url_to_analyze,
+      "features": {
+        "entities": {
+          "sentiment": True,
+          "relevance": True,
+          "source":True,
+          "limit": 3
+        }
+      }
+    }
+    username = "802a033d-ff91-4b02-a6c4-a40703ac1b16"
+    password = "TBWFrRx6xwmc"
 
-print(json.dumps(response, indent=2))
-
-#     parameters = {
-#         #'features' : 'concepts,categories,emotion,entities,keywords,metadata,relations,semantic_roles,sentiment',
-#         'features': 'sentiment,entities',
-#         'version' : '2017-02-27',
-#         'url': url,
-#         'language' : 'en',
-#         #'relevance' : True
-#         # url = url_to_analyze, this is an alternative to sending the text
-#     }
-
-#     resp = requests.get(endpoint, params=parameters, auth=(username, password))
-    
-#     return resp.json()
-
-# article_to_analyze = 'http://www.politico.com/story/2017/05/23/infrastructure-transportation-trump-budget-238741'
-
-# data = extractEntities(article_to_analyze)
-# data['entities']
+    resp = requests.post(endpoint_watson, data=json.dumps(watson_options), 
+                         headers=headers, params=params, auth=(username, password) )
+    return resp.json()
 
 
-# # This function takes as input the result
-# # from the IBM Watson API and returns a list
-# # of entities that are relevant (above threshold)
-# # to the article
-# def getEntities(data, threshold):
-#     result = []
-#     for entity in data["entities"]:
-#         relevance = float(entity['relevance'])
-#         if relevance > threshold:
-#             result.append(entity['text'])
-#     return result
+url_to_analyze = 'http://www.politico.com/story/2017/05/23/infrastructure-transportation-trump-budget-238741'
 
-# getEntities(data, 0.25)
+data = getSentiment(url_to_analyze)
+print(data)
+
+# f = open('/Users/shamekabrayton/Documents/NYU/01_DwD/PostModule/Assignment05/out.json', 'w')
+# f.write("testing")
+# f.close()
+
+with open('/Users/shamekabrayton/Documents/NYU/01_DwD/PostModule/Assignment05/out.json', 'w') as fp:
+    json.dump(data, fp)
+

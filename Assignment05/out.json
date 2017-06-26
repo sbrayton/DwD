@@ -1,0 +1,47 @@
+{
+  "retrieved_url": "http://www.politico.com/story/2017/05/23/infrastructure-transportation-trump-budget-238741",
+  "language": "en",
+  "entities": [
+    {
+      "type": "Person",
+      "text": "President Donald Trump",
+      "sentiment": {
+        "score": 0.0
+      },
+      "relevance": 0.882851,
+      "disambiguation": {
+        "subtype": [
+          "AwardNominee",
+          "AwardWinner",
+          "Celebrity",
+          "CompanyFounder",
+          "TVPersonality",
+          "TVProducer",
+          "FilmActor",
+          "TVActor"
+        ],
+        "name": "Donald Trump",
+        "dbpedia_resource": "http://dbpedia.org/resource/Donald_Trump"
+      },
+      "count": 4
+    },
+    {
+      "type": "JobTitle",
+      "text": "president",
+      "sentiment": {
+        "score": 0.0797512
+      },
+      "relevance": 0.684575,
+      "count": 6
+    },
+    {
+      "type": "Company",
+      "text": "Trump",
+      "sentiment": {
+        "score": 0.51212
+      },
+      "relevance": 0.612887,
+      "count": 3
+    }
+  ]
+}
